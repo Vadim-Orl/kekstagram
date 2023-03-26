@@ -5,6 +5,7 @@ var DESCKRIPTION = ['Тестим новую камеру!', 'Затусили �
                     'Как же круто тут кормят', 'Отдыхаем...', 
                     'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......', 'Вот это тачка!'];
 
+var fragment = document.createDocumentFragment();
 
 var PhotoBlockInit = function(index) {
   this.url = `photos/${index + 1}.jpg`;
@@ -13,8 +14,9 @@ var PhotoBlockInit = function(index) {
   this.desckription = DESCKRIPTION[Math.floor( Math.random() * DESCKRIPTION.length)];
 
   function randomComments(){
+    var maxRandomComments = 2;
     var comment = [];
-    commentsAmount = Math.floor( Math.random() * 2) + 1;
+    commentsAmount = Math.floor( Math.random() * maxRandomComments) + 1;
 
     for (var i = 0; i < commentsAmount; i++){
       comment[i] = COMMENTS[Math.floor( Math.random() * COMMENTS.length)];
@@ -23,43 +25,39 @@ var PhotoBlockInit = function(index) {
   }
 };
 
-var doPhotoInit = function() {
+var doNewPhotoList = function() {
+  var photoAmount = 25;
   var photosBlock = [];
-  for (var i = 0; i < 25; i++){
+
+  for (var i = 0; i < photoAmount; i++){
     photosBlock[i] = new PhotoBlockInit(i);
   }
 
   return photosBlock;
 };
 
+var listPictures = doNewPhotoList();
 
-
-var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-
-console.log(pictureTemplate);
-
+function initPhoto(){
+  for (var i = 0; i < listPictures.length; i++) {
+    fragment.appendChild(renderPictures(listPictures[i]));
+  }
+  
+  document.querySelector('.pictures').appendChild(fragment);
+}
 
 var renderPictures = function (picture) {
-  //клонируем ноду и изменяем ее
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictureElement = pictureTemplate.cloneNode(true);
-  console.log(picture.url);
-  pictureElement.querySelector('img').src= picture.url;
+
+  pictureElement.querySelector('img').src = picture.url;
   pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
   pictureElement.querySelector('.picture__likes').textContent = picture.likes;
 
   return pictureElement;
 };
 
-var fragment = document.createDocumentFragment();
-var tmp = doPhotoInit();
-console.log(tmp.length);
-
-for (var i = 0; i < tmp.length; i++) {
-  fragment.appendChild(renderPictures(tmp[i]));
-}
-
-document.querySelector('.pictures').appendChild(fragment);
-
+initPhoto();
 
 
 //------------ bigPictures
@@ -67,11 +65,34 @@ document.querySelector('.pictures').appendChild(fragment);
 var bigPictures = document.querySelector('.big-picture');
 bigPictures.classList.remove('hidden');
 
-bigPictures.querySelector('.big-picture__img').querySelector('img').src = tmp[1].url;
-bigPictures.querySelector('.likes-count').textContent = tmp[1].likes;
-bigPictures.querySelector('.comments-count').textContent = tmp[1].comments.length;
-bigPictures.querySelector('.likes-count').textContent = tmp[1].likes;
 
+var renderComment = function(bigPicture, index, bigPictureTemplate){
+  var pictureElement = bigPictureTemplate.cloneNode(true);
 
+  var randomAvatar = Math.floor( Math.random() * 6) + 1;
+  pictureElement.querySelector('.social__picture').src = `img/avatar-${randomAvatar}.svg`;
+  pictureElement.querySelector('.social__text').textContent = bigPicture.comments[index];
 
-console.log(bigPictures.querySelector('.big-picture__img').querySelector('img'));
+  return pictureElement;
+};
+  
+
+renderBigPictureComments = function(bigPicture){
+  var bigPictureCommentTemplate = document.querySelector('#social__comment').content.querySelector('.social__comment');
+
+  for (var i = 0; i < bigPicture.comments.length; i++){
+    fragment.appendChild(renderComment(bigPicture, i, bigPictureCommentTemplate));
+    document.querySelector('.social__comments').appendChild(fragment);
+  }
+};
+
+function newBigPictures(itemPictures){
+  bigPictures.querySelector('.big-picture__img').querySelector('img').src = itemPictures.url;
+  bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
+  bigPictures.querySelector('.comments-count').textContent = itemPictures.comments.length;
+  bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
+
+  renderBigPictureComments(itemPictures);
+}
+
+newBigPictures(listPictures[1]);
