@@ -18,7 +18,7 @@ var PhotoBlockInit = function(index) {
 
     for (var i = 0; i < commentsAmount; i++){
       comment[i] = COMMENTS[Math.floor( Math.random() * COMMENTS.length)];
-    };
+    }
     return  comment;
   }
 };
@@ -27,7 +27,7 @@ var doPhotoInit = function() {
   var photosBlock = [];
   for (var i = 0; i < 25; i++){
     photosBlock[i] = new PhotoBlockInit(i);
-  };
+  }
 
   return photosBlock;
 };
