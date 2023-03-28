@@ -1,3 +1,7 @@
+var maxRandomComments = 4;
+var maxRandomLickes = 255;
+var minRandomLickes = 15;
+
 var COMMENTS = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 
               'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
@@ -8,20 +12,33 @@ var DESCKRIPTION = ['Тестим новую камеру!', 'Затусили �
 var fragment = document.createDocumentFragment();
 
 var PhotoBlockInit = function(index) {
+  // this.comments = [];
   this.url = `photos/${index + 1}.jpg`;
-  this.likes = Math.floor( Math.random() * 254) + 15;
+  this.likes = Math.floor( Math.random() * maxRandomLickes) + minRandomLickes;
   this.comments = randomComments();
   this.desckription = DESCKRIPTION[Math.floor( Math.random() * DESCKRIPTION.length)];
 
   function randomComments(){
-    var maxRandomComments = 2;
     var comment = [];
     commentsAmount = Math.floor( Math.random() * maxRandomComments) + 1;
 
     for (var i = 0; i < commentsAmount; i++){
-      comment[i] = COMMENTS[Math.floor( Math.random() * COMMENTS.length)];
+      var tmp = examinationRandomComment(comment);
+      comment[i] = COMMENTS[tmp];
     }
+    console.log( comment);
     return  comment;
+  }
+
+  function examinationRandomComment(comment){
+    var commentRandom = Math.floor( Math.random() * COMMENTS.length);
+
+    for (var i = 0; i <= comment.length; i++){
+      while (comment.includes(COMMENTS[commentRandom])){
+        commentRandom = Math.floor( Math.random() * COMMENTS.length);
+      }
+    }
+    return commentRandom;
   }
 };
 
@@ -64,6 +81,8 @@ initPhoto();
 
 var bigPictures = document.querySelector('.big-picture');
 bigPictures.classList.remove('hidden');
+document.querySelector('.social__comment-count').classList.add('visually-hidden');
+document.querySelector('.social__comments-loader').classList.add('visually-hidden');
 
 
 var renderComment = function(bigPicture, index, bigPictureTemplate){
@@ -91,8 +110,10 @@ function newBigPictures(itemPictures){
   bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
   bigPictures.querySelector('.comments-count').textContent = itemPictures.comments.length;
   bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
+  bigPictures.querySelector('.social__caption').textContent = itemPictures.desckription;
+
 
   renderBigPictureComments(itemPictures);
 }
 
-newBigPictures(listPictures[1]);
+newBigPictures(listPictures[24]);
