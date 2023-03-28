@@ -56,12 +56,14 @@
                   </div>
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
-                  <fieldset class="img-upload__effect-level  effect-level">
-                    <input class="effect-level__value" type="number" name="effect-level" value="20">
-                    <div class="effect-level__line">
-                      <div class="effect-level__pin" tabindex="0">Кнопка изменения глубины эффекта фотографии</div>
-                    </div>
-                  </fieldset>
+                    <fieldset class="img-upload__effect-level  effect-level">
+                      <input class="effect-level__value" type="number" step="any" name="effect-level" value="">
+                      <div class="effect-level__slider">
+                        <div class="upload-effect-level-pin"></div>
+                        <div class="upload-effect-level-val"></div>
+                      </div>
+                    </fieldset>
+
 
                   <!-- Кнопка для закрытия формы редактирования изображения -->
                   <button type="reset" class="img-upload__cancel  cancel" id="upload-cancel">Закрыть</button>
