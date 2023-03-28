@@ -78,11 +78,26 @@ initPhoto();
 
 
 //------------ bigPictures
-
 var bigPictures = document.querySelector('.big-picture');
-bigPictures.classList.remove('hidden');
-document.querySelector('.social__comment-count').classList.add('visually-hidden');
-document.querySelector('.social__comments-loader').classList.add('visually-hidden');
+
+var openBigPicture = function() {
+  bigPictures.classList.remove('hidden');
+  document.querySelector('.social__comment-count').classList.add('visually-hidden');
+  document.querySelector('.social__comments-loader').classList.add('visually-hidden');
+  console.log('list');
+};
+console.log(document.querySelector('.picture'));
+
+var closeBigPicture = function() {
+  bigPictures.classList.add('hidden');
+}
+
+document.querySelector('.picture').addEventListener('click', openBigPicture);
+document.querySelector('.big-picture__cancel').addEventListener('click', closeBigPicture);
+
+
+
+
 
 
 var renderComment = function(bigPicture, index, bigPictureTemplate){
@@ -117,3 +132,28 @@ function newBigPictures(itemPictures){
 }
 
 newBigPictures(listPictures[24]);
+
+
+//--------------------------------
+var uploadButtonStart = document.querySelector('.img-upload__start');
+var uploadButtonCancel = document.querySelector('.img-upload__cancel');
+var overlayImg = document.querySelector('.img-upload__overlay');
+var inputFile = document.querySelector('#upload-file');
+
+var doOverlayImgOpen = function() {
+  overlayImg.classList.remove('hidden');
+};
+
+var doOverlayImgClose = function() {
+  overlayImg.classList.add('hidden');
+  inputFile.value = '';
+}
+
+
+uploadButtonStart.addEventListener('change', function() {
+  doOverlayImgOpen();
+})
+
+uploadButtonCancel.addEventListener('click', function() {
+  doOverlayImgClose();
+})
