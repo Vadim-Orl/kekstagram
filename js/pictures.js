@@ -134,26 +134,106 @@ function newBigPictures(itemPictures){
 newBigPictures(listPictures[24]);
 
 
-//--------------------------------
+//--------------------------------загрузка
 var uploadButtonStart = document.querySelector('.img-upload__start');
 var uploadButtonCancel = document.querySelector('.img-upload__cancel');
 var overlayImg = document.querySelector('.img-upload__overlay');
 var inputFile = document.querySelector('#upload-file');
 
+var imgPreview = document.querySelector('.img-upload__preview');
+var pinUpload = document.querySelector('.upload-effect-level-pin');
+var valUpload = document.querySelector('.upload-effect-level-val');
+var trackUpload = document.querySelector('.effect-level');
+
+var listEffectItem = document.querySelectorAll('.effects__item');
+var listUploadEffectLevel = [];
+
+
+var uploadEffectLevel = function(tmp) {
+  this.trackUpload = document.querySelector('.effect-level');
+  this.valUpload = document.querySelector('.upload-effect-level-val');
+  this.pinUpload = tmp;
+
+  this.changeEffectLevel = function() {
+    trackUpload = this.trackUpload;
+    valUpload = this.valUpload;
+    pinUpload = this.pinUpload;
+  };
+};
+
+
 var doOverlayImgOpen = function() {
   overlayImg.classList.remove('hidden');
+
+  for (var i = 0; i < listEffectItem.length; i++) {
+    listUploadEffectLevel[i] = new uploadEffectLevel();
+
+    listEffectItem[i].addEventListener('click', function() {
+      listUploadEffectLevel[i].changeEffectLevel();
+    });
+  }
+
+  listUploadEffectLevel[1].pinUpload.style.transform = `translateX(100px)`;
 };
 
 var doOverlayImgClose = function() {
   overlayImg.classList.add('hidden');
   inputFile.value = '';
-}
 
+  for (var i = 0; i < listEffectItem.length; i++) {
+    listUploadEffectLevel[i] = null;
+  }
+};
 
+//временно открытие чтоб не нажимать
+doOverlayImgOpen();
+
+//открытие если изменен файл
 uploadButtonStart.addEventListener('change', function() {
   doOverlayImgOpen();
-})
+});
 
+//закрытие
 uploadButtonCancel.addEventListener('click', function() {
   doOverlayImgClose();
-})
+});
+
+
+//при нажатии на новый эффект открывается обект определенный EffectLevel
+
+listEffectItem.forEach((el, index) => {
+  el.addEventListener('click', function() {
+    console.log(listUploadEffectLevel[0].pinUpload.style.transform===listUploadEffectLevel[1].pinUpload.style.transform);
+
+    listUploadEffectLevel[index].changeEffectLevel();
+  });
+});
+
+
+// //замена эффекта + 
+// var changePinPosition = function(pinPositionEnd) {
+//   pinUpload.style.transform = `translateX(${pinPositionEnd}px)`;
+//   valUpload.style.width = `${pinPositionEnd + valUpload.offsetWidth}px`;
+// };
+
+// var doLevelSaturation = function() {
+//   var pinPositionStart = 0;
+//   var widthTrack = overlayImg.querySelector('.img-upload__effect-level').offsetWidth;
+
+//   //узнать на сколько сдвинулся пин
+//   var pinPositionEnd = 100;  // ?-------------  выщитать
+
+//   //сдвинуть пин
+//   changePinPosition(pinPositionEnd);
+
+//   //изменить наыщеность
+//   var saturatePercent = Math.floor(100 - (100 * pinPositionEnd) / widthTrack);
+//   imgPreview.style.filter = `saturate(${saturatePercent}%)`;
+// };
+
+// trackUpload.addEventListener('click', doLevelSaturation);
+
+// tmp.addEventListener('click', function(){
+//   // doLevelSaturation();
+//   trackUpload.removeEventListener('click', doLevelSaturation);
+// })

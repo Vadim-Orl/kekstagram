@@ -531,10 +531,21 @@ main {
   position: absolute;
   width: 28px;
   height: 28px;
-  top: 1px;
+  top: 2px;
   left: 4px;
   background-color: red;
   border-radius: 50%;
+  z-index: 11;
+ }
+
+ .upload-effect-level-val {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  top: 2px;
+  left: 4px;
+  background-color: rgb(244, 224, 135);
+  border-radius: 50px;
  }
 
 .effect-level {
