@@ -12,7 +12,6 @@ var DESCKRIPTION = ['Тестим новую камеру!', 'Затусили �
 var fragment = document.createDocumentFragment();
 
 var PhotoBlockInit = function(index) {
-  // this.comments = [];
   this.url = `photos/${index + 1}.jpg`;
   this.likes = Math.floor( Math.random() * maxRandomLickes) + minRandomLickes;
   this.comments = randomComments();
@@ -52,52 +51,63 @@ var doNewPhotoList = function() {
   return photosBlock;
 };
 
-var listPictures = doNewPhotoList();
+var listPicturesBlock = doNewPhotoList();
 
 function initPhoto(){
-  for (var i = 0; i < listPictures.length; i++) {
-    fragment.appendChild(renderPictures(listPictures[i]));
+  for (var i = 0; i < listPicturesBlock.length; i++) {
+    fragment.appendChild(renderPictures(listPicturesBlock[i], i));
   }
   
   document.querySelector('.pictures').appendChild(fragment);
 }
 
-var renderPictures = function (picture) {
+var renderPictures = function (picture, index) {
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictureElement = pictureTemplate.cloneNode(true);
 
   pictureElement.querySelector('img').src = picture.url;
   pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
   pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-
+  pictureElement.name = index;
   return pictureElement;
 };
 
 initPhoto();
 
 
-//------------ bigPictures
+//------------ bigPictures open/close
 var bigPictures = document.querySelector('.big-picture');
+var picturesTable = document.querySelector('.pictures');
 
 var openBigPicture = function() {
   bigPictures.classList.remove('hidden');
   document.querySelector('.social__comment-count').classList.add('visually-hidden');
   document.querySelector('.social__comments-loader').classList.add('visually-hidden');
-  console.log('list');
 };
-console.log(document.querySelector('.picture'));
 
 var closeBigPicture = function() {
   bigPictures.classList.add('hidden');
-}
+};
 
-document.querySelector('.picture').addEventListener('click', openBigPicture);
+
+picturesTable.addEventListener('click', function(evt) {
+  var target = evt.target;
+
+  while(target !== this) { 
+    if (target.classList.contains('picture')) {
+      newBigPictures(listPicturesBlock[target.name]);
+      openBigPicture();
+    }
+    target = target.parentNode;
+  }
+});
+
 document.querySelector('.big-picture__cancel').addEventListener('click', closeBigPicture);
 
 
 
 
-
+// коментарии к каждому
 
 var renderComment = function(bigPicture, index, bigPictureTemplate){
   var pictureElement = bigPictureTemplate.cloneNode(true);
@@ -119,18 +129,19 @@ renderBigPictureComments = function(bigPicture){
   }
 };
 
-function newBigPictures(itemPictures){
-  bigPictures.querySelector('.big-picture__img').querySelector('img').src = itemPictures.url;
-  bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
-  bigPictures.querySelector('.comments-count').textContent = itemPictures.comments.length;
-  bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
-  bigPictures.querySelector('.social__caption').textContent = itemPictures.desckription;
 
+var newBigPictures = function(itemPictures) {
+  if (itemPictures !== undefined) {
+    bigPictures.querySelector('.big-picture__img').querySelector('img').src = itemPictures.url;
+    bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
+    bigPictures.querySelector('.comments-count').textContent = itemPictures.comments.length;
+    bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
+    bigPictures.querySelector('.social__caption').textContent = itemPictures.desckription;
 
-  renderBigPictureComments(itemPictures);
-}
+    renderBigPictureComments(itemPictures);
+  }
+};
 
-newBigPictures(listPictures[24]);
 
 
 
@@ -259,7 +270,7 @@ var doOverlayImgClose = function() {
 };
 
 //временно открытие чтоб не нажимать
-doOverlayImgOpen();
+// doOverlayImgOpen();
 
 //открытие если изменен файл
 uploadButtonStart.addEventListener('change', function() {
