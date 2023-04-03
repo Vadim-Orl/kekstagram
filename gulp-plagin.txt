@@ -20,6 +20,7 @@ sass компилятор
 gulp-babel @babel/core @babel/preset-env для javascript
 gulp-uglify минифицировать js (-----------------)
 webpack webpack-stream js wather
+gulp-rigger для склеивания js файлов
 gulp-imagemin обработка изображений
 gulp-newer смотрит есть ли изображение если нет добавляет (фильтр)
 gulp-webp оптимальное качество изображения
