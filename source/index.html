@@ -35,7 +35,7 @@
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
               <input type="file" id="upload-file" class="img-upload__input  visually-hidden" name="filename" required>
-              <label for="upload-file" class="img-upload__label  img-upload__control">Загрузить</label>
+              <label for="upload-file" class="img-upload__label  img-upload__control"  accept="image/png, image/jpeg">Загрузить</label>
             </fieldset>
 
             <!-- Форма редактирования изображения -->
@@ -56,10 +56,14 @@
                   </div>
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
-                  <fieldset class="img-upload__effect-level  effect-level">
-                    <input class="effect-level__value" type="number" step="any" name="effect-level" value="">
-                    <div class="effect-level__slider"></div>
-                  </fieldset>
+                    <fieldset class="img-upload__effect-level  effect-level">
+                      <input class="effect-level__value" type="number" step="any" name="effect-level" value="">
+                      <div class="effect-level__slider">
+                        <div class="upload-effect-level-pin"  tabindex="0"></div>
+                        <div class="upload-effect-level-val"></div>
+                      </div>
+                    </fieldset>
+
 
                   <!-- Кнопка для закрытия формы редактирования изображения -->
                   <button type="reset" class="img-upload__cancel  cancel" id="upload-cancel">Закрыть</button>
@@ -156,14 +160,14 @@
           <!-- Комментарии к изображению -->
           <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
           <ul class="social__comments">
-            <li class="social__comment">
+            <!-- <li class="social__comment">
               <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
               <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
             </li>
             <li class="social__comment">
               <img class="social__picture" src="img/avatar-3.svg" alt="Аватар комментатора фотографии" width="35" height="35">
                <p class="social__text">Да это фоташоп!!!!!!!!</p>
-            </li>
+            </li> -->
           </ul>
 
           <!-- Кнопка для загрузки новой порции комментариев -->
@@ -198,8 +202,8 @@
 
   <!-- Шаблон изображения случайного пользователя -->
   <template id="picture">
-    <a href="#" class="picture">
-      <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
+    <a href="#" class="picture" name="">
+      <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография" value="11">
       <p class="picture__info">
         <span class="picture__comments"></span>
         <span class="picture__likes"></span>
@@ -232,6 +236,13 @@
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
 
+  <template id="social__comment">
+    <li class="social__comment social__comment--text">
+      <img class="social__picture" src="" alt="" width="35" height="35">
+      <p class="social__text"></p>
+    </li>
+  </template>
+  
   
 <script src="js/pictures.js"></script>
 </body>
