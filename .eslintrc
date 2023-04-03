@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+
+  "extends": ["airbnb/base"],
+  "parserOptions": { "ecmaVersion": 9 },
+  "rules": {
+    "semi": "off",
+    "no-console":"warn",
+    "arrow-body-style":"off",
+    "no-unused-vars":"warn",
+    "indent":"warn",
+    "space-infix-ops":"warn",
+    "no-plusplus":"off",
+    "no-tabs":"off",
+    "no-var":"off",
+    "no-use-before-define":"off",
+    "vars-on-top":"off",
+    "max-len":["error", 150],
+    "func-names":"off"
+  }
+}
