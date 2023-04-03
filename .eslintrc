@@ -20,6 +20,7 @@
     "no-use-before-define":"off",
     "vars-on-top":"off",
     "max-len":["error", 150],
-    "func-names":"off"
+    "func-names":"off",
+    "import/extensions": ["error", "never", { "js": "always" }]
   }
 }
