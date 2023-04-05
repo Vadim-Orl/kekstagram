@@ -30,6 +30,7 @@
   }
 
   var onOutsidePictureClick = function (evt) {
+    console.log('move')
     var { target } = evt;
 
     if (!target.closest('.big-picture__preview')) {

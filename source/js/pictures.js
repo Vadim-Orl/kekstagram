@@ -102,7 +102,7 @@ var doOverlayImgClose = function () {
 };
 
 // временно открытие чтоб не нажимать
-// doOverlayImgOpen();
+doOverlayImgOpen();
 
 // открытие если изменен файл
 uploadButtonStart.addEventListener('change', () => {
