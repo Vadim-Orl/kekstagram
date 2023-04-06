@@ -22,8 +22,8 @@ var listEffectItem = document.querySelectorAll('.effects__item');
 var listDataEffect = [];
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
-var STEP_LEFT = 10;
-var STEP_RIGHT = -10;
+var STEP_LEFT = -10;
+var STEP_RIGHT = 10;
 
 var UploadEffectLevel = function (effectItem, effectIndex) {
   this.effect = arrEffects[effectIndex];
@@ -34,8 +34,6 @@ var UploadEffectLevel = function (effectItem, effectIndex) {
   this.effectsMaxPercent = arrPercent[effectIndex];
 
   this.changeEffectLevelItem = function () {
-    // console.log ('barPinPosition ' + this.barPinPosition)
-    // console.log(typeof (this.barPinPosition))
     barFill.style.width = `${this.barFillPosition}px`;
     barPin.style.transform = `translateX(${this.barPinPosition}px)`;
 
@@ -47,15 +45,11 @@ var UploadEffectLevel = function (effectItem, effectIndex) {
 
   this.changeBarPinPosition = function (num = 0) {
     var widthTrack = (barTrack.offsetWidth - barPin.offsetWidth - 6);
-    var tmp = this.barPinPosition - num;
+    var tmp = this.barPinPosition + num;
 
     if ((tmp >= 0) && (tmp <= widthTrack)) {
-      console.log(`${num}`)
-
       this.barPinPosition = tmp;
-      console.log('yes')
       this.barFillPosition = tmp;
-      // console.log(`${this.effect} barPinPosition ${this.barPinPosition}`);
     }
   };
 };
@@ -65,7 +59,7 @@ var changeEffectLevel = function (step) {
   var effectImputChecked = document.querySelector('input[name="effect"]:checked');
   var indexInputChecked = (arrTypes.indexOf(effectImputChecked.value));
 
-  // console.log(effectImputChecked.value);
+  // заменить на евент!!!!!!!!;
   if ((indexInputChecked > 0) && (step !== 0)) {
     console.log('step > 0');
 
@@ -86,8 +80,6 @@ var doOverlayImgOpen = function () {
     listDataEffect[i] = new UploadEffectLevel(listEffectItem[i], i);
     addClickListener(listEffectItem[i]);
   }
-  console.log(listDataEffect)
-  console.log(listEffectItem)
 };
 
 barPin.addEventListener('keydown', (evt) => {
@@ -107,12 +99,9 @@ barPin.addEventListener('mousedown', (evt) => {
 
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    console.log('startCoordsX' + startCoordsX)
-    console.log('moveEvt.clientX' + moveEvt.clientX)
-    var shift = startCoordsX - moveEvt.clientX;
+    var shift = moveEvt.clientX - startCoordsX;
     startCoordsX = moveEvt.clientX
 
-    console.log("shift" + shift)
     changeEffectLevel(shift);
   };
 
