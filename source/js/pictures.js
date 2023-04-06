@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 // --------------------------------загрузка
 
 var arrTypes = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
@@ -7,93 +8,127 @@ var arrUnit = ['none', '', '', '%', 'px', ''];
 
 var uploadButtonStart = document.querySelector('.img-upload__start');
 var uploadButtonCancel = document.querySelector('.img-upload__cancel');
-var overlayImg = document.querySelector('.img-upload__overlay');
+var uploadBlock = document.querySelector('.img-upload__overlay');
 var inputFile = document.querySelector('#upload-file');
 
 var imgPreview = document.querySelector('.img-upload__preview');
 
 var barPin = document.querySelector('.upload-effect-level-pin');
 var barFill = document.querySelector('.upload-effect-level-val');
-var bar = document.querySelector('.effect-level');
+var barTrack = uploadBlock.querySelector('.img-upload__effect-level');
 
 var listEffectItem = document.querySelectorAll('.effects__item');
-var listEffectInput = document.querySelectorAll('input[name="effect"]');
 
 var listDataEffect = [];
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
-var STEP_LEFT = -10;
-var STEP_RIGHT = 10;
+var STEP_LEFT = 10;
+var STEP_RIGHT = -10;
 
 var UploadEffectLevel = function (effectItem, effectIndex) {
-  this.effect = effectItem;
+  this.effect = arrEffects[effectIndex];
   this.effectIndex = effectIndex;
-  this.barPinPosition = 0;
+  this.barPinPosition = Number(barPin.style.translate.slice(0, -2));
   this.barFillPosition = barFill.offsetWidth;
   this.effectsUnit = arrUnit[effectIndex];
   this.effectsMaxPercent = arrPercent[effectIndex];
 
-  this.changeEffectLevel = function () {
+  this.changeEffectLevelItem = function () {
+    // console.log ('barPinPosition ' + this.barPinPosition)
+    // console.log(typeof (this.barPinPosition))
     barFill.style.width = `${this.barFillPosition}px`;
     barPin.style.transform = `translateX(${this.barPinPosition}px)`;
 
-    var widthTrack = overlayImg.querySelector('.img-upload__effect-level').offsetWidth;
-    var saturatePercent = this.effectsMaxPercent - (this.effectsMaxPercent * this.barPinPosition) / (widthTrack - barPin.offsetWidth - 2);
+    var widthTrack = (barTrack.offsetWidth - 1);
+    var saturatePercent = this.effectsMaxPercent - (this.effectsMaxPercent * this.barPinPosition) / (widthTrack - barPin.offsetWidth - 6);
 
-    imgPreview.style.filter = `${arrEffects[effectIndex]}(${saturatePercent}${this.effectsUnit})`;
+    imgPreview.style.filter = `${this.effect}(${saturatePercent}${this.effectsUnit})`;
   };
 
-  this.changeBarPinPosition = function (num) {
-    var widthTrack = overlayImg.querySelector('.img-upload__effect-level').offsetWidth - 28;
+  this.changeBarPinPosition = function (num = 0) {
+    var widthTrack = (barTrack.offsetWidth - barPin.offsetWidth - 6);
+    var tmp = this.barPinPosition - num;
 
-    var tmp = this.barPinPosition + num;
-    if ((tmp <= widthTrack) && (tmp >= 0)) {
+    if ((tmp >= 0) && (tmp <= widthTrack)) {
+      console.log(`${num}`)
+
       this.barPinPosition = tmp;
-      this.barFillPosition += num;
-      console.log(`barPinPosition ${this.barPinPosition}`);
+      console.log('yes')
+      this.barFillPosition = tmp;
+      // console.log(`${this.effect} barPinPosition ${this.barPinPosition}`);
     }
   };
-
-  this.changeBarFillPosition = function (num) {
-    this.barFillPosition += num;
-  };
 };
 
-var changeEffectLevel = function (step = 0) {
-  imgPreview.style.filter = 'none';
-  var itemInstrument = document.querySelector('input[name="effect"]:checked');
-  var indexInput = (arrTypes.indexOf(itemInstrument.value));
+var changeEffectLevel = function (step) {
+  // imgPreview.style.filter = 'none';
+  var effectImputChecked = document.querySelector('input[name="effect"]:checked');
+  var indexInputChecked = (arrTypes.indexOf(effectImputChecked.value));
 
-  if (indexInput > 0) {
-    listDataEffect[indexInput].changeBarPinPosition(step);
-    listDataEffect[indexInput].changeEffectLevel(indexInput);
+  // console.log(effectImputChecked.value);
+  if ((indexInputChecked > 0) && (step !== 0)) {
+    console.log('step > 0');
+
+    listDataEffect[indexInputChecked].changeBarPinPosition(step);
+    listDataEffect[indexInputChecked].changeEffectLevelItem(indexInputChecked);
   }
 };
+
+var addClickListener = function (effectItem, index) {
+  effectItem.addEventListener('click', () => {
+    changeEffectLevel();
+  });
+}
 
 var doOverlayImgOpen = function () {
-  overlayImg.classList.remove('hidden');
-
+  uploadBlock.classList.remove('hidden');
   for (var i = 0; i < listEffectItem.length; i++) {
     listDataEffect[i] = new UploadEffectLevel(listEffectItem[i], i);
-
-    listEffectItem[i].addEventListener('click', () => {
-      changeEffectLevel();
-    });
+    addClickListener(listEffectItem[i]);
   }
+  console.log(listDataEffect)
+  console.log(listEffectItem)
 };
 
 barPin.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === LEFT_KEY) {
+  if (window.utils.isLeftKeycode(evt)) {
     changeEffectLevel(STEP_LEFT);
   }
 
-  if (evt.keyCode === RIGHT_KEY) {
+  if (window.utils.isRightKeycode(evt)) {
     changeEffectLevel(STEP_RIGHT);
   }
 });
 
+barPin.addEventListener('mousedown', (evt) => {
+  evt.preventDefault();
+
+  var startCoordsX = evt.clientX;
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    console.log('startCoordsX' + startCoordsX)
+    console.log('moveEvt.clientX' + moveEvt.clientX)
+    var shift = startCoordsX - moveEvt.clientX;
+    startCoordsX = moveEvt.clientX
+
+    console.log("shift" + shift)
+    changeEffectLevel(shift);
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
 var doOverlayImgClose = function () {
-  overlayImg.classList.add('hidden');
+  uploadBlock.classList.add('hidden');
   inputFile.value = '';
 
   for (var i = 0; i < listEffectItem.length; i++) {

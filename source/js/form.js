@@ -1,14 +1,10 @@
-// хэш-теги необязательны;
-// один и тот же хэш-тег не может быть использован дважды;
-// если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить
-// к закрытию формы редактирования изображения.
-
-const HASHTAG_VALID_FERST_CHAR = /^#/;
-const HASHTAG_VALID_OTHER_CHAR = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
-// const HASHTAG_VALID_MAX_CHAR = /{1,19}$/;
-
 const MAX_CHAR_HASHTAG_AMOUNT = 20;
 const MAX_HASHTAG_AMOUNT = 2;
+
+const HASHTAG_VALID_FERST_CHAR = /^#/;
+
+// поставить константу в нижнюю форму
+const HASHTAG_VALID_OTHER_CHAR = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
 
 var formUpload = document.querySelector('.img-upload__form');
 var hashtagsInput = formUpload.querySelector('.text__hashtags');
@@ -55,30 +51,26 @@ var onHashtagInputValid = function (evt) {
   hashtagsInput.reportValidity();
 }
 
-
-
 // test close
 
-var overlayImg = document.querySelector('.img-upload__overlay');
+var uploadBlock = document.querySelector('.img-upload__overlay');
 
 var onOutsideOnLoadClick = function (evt) {
-  console.log('close')
   var { target } = evt;
   if (target.querySelector('.img-upload__wrapper')) {
-    overlayImg.classList.add('hidden');
+    uploadBlock.classList.add('hidden');
     console.log('close wrapper')
   }
 }
 
 var onOnLoadEscPress = function (evt) {
   if (window.utils.isEscKeycode(evt)) {
-    overlayImg.classList.add('hidden');
+    uploadBlock.classList.add('hidden');
     console.log('close wrapper')
   }
 }
 
-
-overlayImg.addEventListener('click', onOutsideOnLoadClick)
+uploadBlock.addEventListener('click', onOutsideOnLoadClick)
 document.addEventListener('keydown', onOnLoadEscPress)
 formUpload.onsubmit = function () {
   return false
