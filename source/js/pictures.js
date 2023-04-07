@@ -13,6 +13,7 @@ var inputFile = document.querySelector('#upload-file');
 
 var imgPreview = document.querySelector('.img-upload__preview');
 
+var barEffectLevel = document.querySelector('.img-upload__effect-level');
 var barPin = document.querySelector('.upload-effect-level-pin');
 var barFill = document.querySelector('.upload-effect-level-val');
 var barTrack = uploadBlock.querySelector('.img-upload__effect-level');
@@ -55,11 +56,11 @@ var UploadEffectLevel = function (effectItem, effectIndex) {
 };
 
 var changeEffectLevel = function (step) {
-  // imgPreview.style.filter = 'none';
   var effectImputChecked = document.querySelector('input[name="effect"]:checked');
   var indexInputChecked = (arrTypes.indexOf(effectImputChecked.value));
 
-  // заменить на евент!!!!!!!!;
+  if (indexInputChecked === 0) barEffectLevel.classList.toggle('hidden')
+
   if ((indexInputChecked > 0) && (step !== 0)) {
     console.log('step > 0');
 
@@ -137,3 +138,29 @@ uploadButtonStart.addEventListener('change', () => {
 uploadButtonCancel.addEventListener('click', () => {
   doOverlayImgClose();
 });
+
+
+// обработка клика вне окна и esc
+var clickOutsideChecker = false;
+
+var onOutsideOnLoadDown = function (evt) {
+  if (!evt.target.classList.contains('img-upload__overlay')) return;
+  clickOutsideChecker = true;
+}
+
+var onOutsideOnLoadUp = function (evt) {
+  if (clickOutsideChecker && evt.target.classList.contains('img-upload__overlay')) {
+    uploadBlock.classList.add('hidden');
+  }
+}
+
+var onOnLoadEscPress = function (evt) {
+  if (window.utils.isEscKeycode(evt)) {
+    uploadBlock.classList.add('hidden');
+  }
+}
+
+uploadBlock.addEventListener('mousedown', onOutsideOnLoadDown)
+uploadBlock.addEventListener('mouseup', onOutsideOnLoadUp)
+
+document.addEventListener('keydown', onOnLoadEscPress)

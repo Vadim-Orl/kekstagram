@@ -366,6 +366,7 @@ main {
 }
 
 
+
 /* Окно для редактирования изображения
    ========================================================================== */
 
@@ -391,6 +392,7 @@ main {
   position: relative;
   margin-bottom: 30px;
 }
+
 
 
 /**
@@ -567,6 +569,7 @@ main {
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
+
 }
 
 .effect-level .noUi-target {
@@ -584,6 +587,13 @@ main {
 .effect-level__value {
   display: none;
 }
+
+input[ value="none"]:checked ~
+  .effect-level {
+    display: none;
+    border: 10px solid red;
+
+  }
 
 
 /**

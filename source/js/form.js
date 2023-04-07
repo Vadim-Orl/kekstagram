@@ -53,25 +53,6 @@ var onHashtagInputValid = function (evt) {
 
 // test close
 
-var uploadBlock = document.querySelector('.img-upload__overlay');
-
-var onOutsideOnLoadClick = function (evt) {
-  var { target } = evt;
-  if (target.querySelector('.img-upload__wrapper')) {
-    uploadBlock.classList.add('hidden');
-    console.log('close wrapper')
-  }
-}
-
-var onOnLoadEscPress = function (evt) {
-  if (window.utils.isEscKeycode(evt)) {
-    uploadBlock.classList.add('hidden');
-    console.log('close wrapper')
-  }
-}
-
-uploadBlock.addEventListener('click', onOutsideOnLoadClick)
-document.addEventListener('keydown', onOnLoadEscPress)
 formUpload.onsubmit = function () {
   return false
 }
