@@ -27,7 +27,7 @@ class BarSlider {
     this.setParameters();
     this.setEvents();
     this.setStylePosition();
-    this.onMouseMove()
+    // this.onMouseMove()
   }
 
   setParameters(num = 0) {

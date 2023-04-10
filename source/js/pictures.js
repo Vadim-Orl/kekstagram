@@ -61,12 +61,10 @@ var changeEffectLevel = function (step) {
 
   if (indexInputChecked === 0) barEffectLevel.classList.toggle('hidden')
 
-  // if ((indexInputChecked > 0) && (step !== 0)) {
-  //   console.log('step > 0');
-
-  //   listDataEffect[indexInputChecked].changeBarPinPosition(step);
-  //   listDataEffect[indexInputChecked].changeEffectLevelItem(indexInputChecked);
-  // }
+  if ((indexInputChecked > 0) && (step !== 0)) {
+    listDataEffect[indexInputChecked].changeBarPinPosition(step);
+    listDataEffect[indexInputChecked].changeEffectLevelItem(indexInputChecked);
+  }
 };
 
 var addClickListener = function (effectItem, index) {
