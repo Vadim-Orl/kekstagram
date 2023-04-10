@@ -4,10 +4,12 @@
   "description": "Учебный проект №4",
   "main": "index.js",
   "scripts": {
+    "dev" : "concurrently \"npm run server\" \"npm start\"",
     "lint": "eslint ./source/js",
     "lint:fix": "eslint ./source/js --fix",
     "start": "gulp",
-    "build": "gulp --production"
+    "build": "gulp --production",
+    "server": "json-server -w source/server/db.json -p 3001"
   },
   "browsewslist": [
     "last 3 versions"
@@ -57,6 +59,7 @@
     "gulp-webp": "^4.0.1",
     "gulp-webp-css": "^1.1.0",
     "gulp-webp-html": "^1.0.2",
+    "json-server": "^0.17.3",
     "prettier": "^2.8.7",
     "rev-del": "^2.0.0",
     "sass": "^1.55.0",
