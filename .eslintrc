@@ -21,6 +21,7 @@
     "vars-on-top":"off",
     "max-len":["error", 150],
     "func-names":"off",
-    "import/extensions": ["error", "never", { "js": "always" }]
+    "import/extensions": ["error", "never", { "js": "always" }],
+    "prefer-arrow-callback": "off"
   }
-}
+}//prefer-arrow-callback

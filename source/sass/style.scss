@@ -588,12 +588,7 @@ main {
   display: none;
 }
 
-input[ value="none"]:checked ~
-  .effect-level {
-    display: none;
-    border: 10px solid red;
 
-  }
 
 
 /**
@@ -696,6 +691,7 @@ input[ value="none"]:checked ~
   -webkit-filter: brightness(3);
           filter: brightness(3);
 }
+
 
 
 /**
@@ -1432,6 +1428,12 @@ input[ value="none"]:checked ~
   background-color: red;
 }
 
+input[value="none"]:checked +
+  .effect-level__slider {
+    display: none;
+    border: 10px solid red;
+  }
+
 .visually-hidden {
   position: absolute;
 
@@ -1453,3 +1455,4 @@ input[ value="none"]:checked ~
 .hidden {
   display: none;
 }
+

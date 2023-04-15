@@ -8,13 +8,18 @@ var uploadEffect = {
 };
 
 (function () {
+  var STEP_LEFT = -10;
+  var STEP_RIGHT = 10;
+
   window.BarSlider = class {
-    constructor(sliderData, collback) {
+    constructor(sliderData, index, collback) {
       this.bar = sliderData.bar;
       this.barPin = sliderData.barPin;
       this.barFill = sliderData.barFill;
       this.barTrack = sliderData.barTrack;
+      this.index = index;
       this.collback = collback;
+      this.active = false;
 
       this.barPinPosition = Number(this.barPin.style.translate.slice(0, -2));
       this.barFillPosition = this.barPinPosition;
@@ -39,21 +44,22 @@ var uploadEffect = {
       if ((tmp >= 0) && (tmp <= widthTrack)) {
         this.barPinPosition = tmp;
         this.barFillPosition = tmp;
-        this.barPinPersent = Math.floor((tmp * 100) / widthTrack);
+        this.barPinPersent = Math.floor((tmp * 100) / widthTrack) / 100;
         this.setStylePosition();
+        this.collback(this.index, this.barPinPersent);
       }
-      console.log(`${this.barPinPersent}`)
+      // console.log(`${this.barPinPersent}`)
     }
 
     setStylePosition() {
     // console.log(collback)
-      this.collback()
       this.barFill.style.width = `${this.barFillPosition}px`;
       this.barPin.style.transform = `translateX(${this.barPinPosition}px)`;
     }
 
     setEvents() {
       this.barPin.addEventListener('mousedown', (evt) => {
+        if (!this.active) return;
         evt.preventDefault();
 
         var startCoordsX = evt.clientX;
@@ -75,6 +81,16 @@ var uploadEffect = {
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
       });
+
+      this.barPin.addEventListener('keydown', (evt) => {
+        if (window.utils.isLeftKeycode(evt)) {
+          this.setParameters(STEP_LEFT);
+        }
+
+        if (window.utils.isRightKeycode(evt)) {
+          this.setParameters(STEP_RIGHT);
+        }
+      });
     }
   }
 
@@ -86,15 +102,4 @@ var uploadEffect = {
       timer = setTimeout(func, time, evt)
     }
   }
-}())
-
-var col2= function () {
-  console.log('coll')
-}
-
-var coll = function () {
-  console.log('coll2')
-}
-
-var barEffect = new window.BarSlider(uploadEffect, col2);
-console.log(barEffect);
+}());

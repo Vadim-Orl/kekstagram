@@ -17,5 +17,12 @@
     isRightKeycode(evt) {
       return evt.keyCode === RIGHT_KEYCODE;
     },
+
+    filterVariants: {
+      arrTypes: ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'],
+      arrEffects: ['none', 'grayscale', 'sepia', 'invert', 'blur', 'brightness'],
+      arrPercent: ['none', '1', '1', '100', '3', '3'],
+      arrUnit: ['none', '', '', '%', 'px', ''],
+    },
   }
 }())
