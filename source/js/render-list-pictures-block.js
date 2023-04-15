@@ -1,46 +1,29 @@
 (function () {
-  var MAX_RANDOM_COMMENTS = 4;
-  var MAX_RANDOM_LICKES = 255;
-  var MIN_RANDOM_LICKES = 15;
-  var COUNT_PHOTOS = 25;
-
-  var COMMENTS = ['Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
-
-  var DESCKRIPTION = ['Тестим новую камеру!', 'Затусили с друзьями на море',
-    'Как же круто тут кормят', 'Отдыхаем...',
-    'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
-    'Вот это тачка!'];
-
   var fragment = document.createDocumentFragment();
 
   var PhotoBlockInit = function (index) {
     this.url = `photos/${index + 1}.jpg`;
-    this.likes = Math.floor(Math.random() * MAX_RANDOM_LICKES) + MIN_RANDOM_LICKES;
+    this.likes = Math.floor(Math.random() * window.dateTest.MAX_RANDOM_LICKES) + window.dateTest.MIN_RANDOM_LICKES;
     this.comments = randomComments();
-    this.desckription = DESCKRIPTION[Math.floor(Math.random() * DESCKRIPTION.length)];
+    this.desckription = window.dateTest.DESCKRIPTION[Math.floor(Math.random() * window.dateTest.DESCKRIPTION.length)];
 
     function randomComments() {
       var comment = [];
-      var commentsAmount = Math.floor(Math.random() * MAX_RANDOM_COMMENTS) + 1;
+      var commentsAmount = Math.floor(Math.random() * window.dateTest.MAX_RANDOM_COMMENTS) + 1;
 
       for (var i = 0; i < commentsAmount; i++) {
         var tmp = examinationRandomComment(comment);
-        comment[i] = COMMENTS[tmp];
+        comment[i] = window.dateTest.COMMENTS[tmp];
       }
       return comment;
     }
 
     function examinationRandomComment(comment) {
-      var commentRandom = Math.floor(Math.random() * COMMENTS.length);
+      var commentRandom = Math.floor(Math.random() * window.dateTest.COMMENTS.length);
 
       for (var i = 0; i <= comment.length; i++) {
-        while (comment.includes(COMMENTS[commentRandom])) {
-          commentRandom = Math.floor(Math.random() * COMMENTS.length);
+        while (comment.includes(window.dateTest.COMMENTS[commentRandom])) {
+          commentRandom = Math.floor(Math.random() * window.dateTest.COMMENTS.length);
         }
       }
       return commentRandom;
@@ -50,7 +33,7 @@
   var doNewPhotoList = function () {
     var photosBlock = [];
 
-    for (var i = 0; i < COUNT_PHOTOS; i++) {
+    for (var i = 0; i < window.dateTest.COUNT_PHOTOS; i++) {
       photosBlock[i] = new PhotoBlockInit(i);
     }
     return photosBlock;

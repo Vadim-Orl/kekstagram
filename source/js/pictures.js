@@ -1,115 +1,123 @@
-// --------------------------------загрузка
 
-var arrTypes = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
-var arrEffects = ['none', 'grayscale', 'sepia', 'invert', 'blur', 'brightness'];
-var arrPercent = ['none', '1', '1', '100', '3', '3'];
-var arrUnit = ['none', '', '', '%', 'px', ''];
+'use strict';
 
-var uploadButtonStart = document.querySelector('.img-upload__start');
-var uploadButtonCancel = document.querySelector('.img-upload__cancel');
-var overlayImg = document.querySelector('.img-upload__overlay');
-var inputFile = document.querySelector('#upload-file');
-
-var imgPreview = document.querySelector('.img-upload__preview');
-
-var barPin = document.querySelector('.upload-effect-level-pin');
-var barFill = document.querySelector('.upload-effect-level-val');
-var bar = document.querySelector('.effect-level');
-
-var listEffectItem = document.querySelectorAll('.effects__item');
-var listEffectInput = document.querySelectorAll('input[name="effect"]');
-
-var listDataEffect = [];
-var LEFT_KEY = 37;
-var RIGHT_KEY = 39;
-var STEP_LEFT = -10;
-var STEP_RIGHT = 10;
-
-var UploadEffectLevel = function (effectItem, effectIndex) {
-  this.effect = effectItem;
-  this.effectIndex = effectIndex;
-  this.barPinPosition = 0;
-  this.barFillPosition = barFill.offsetWidth;
-  this.effectsUnit = arrUnit[effectIndex];
-  this.effectsMaxPercent = arrPercent[effectIndex];
-
-  this.changeEffectLevel = function () {
-    barFill.style.width = `${this.barFillPosition}px`;
-    barPin.style.transform = `translateX(${this.barPinPosition}px)`;
-
-    var widthTrack = overlayImg.querySelector('.img-upload__effect-level').offsetWidth;
-    var saturatePercent = this.effectsMaxPercent - (this.effectsMaxPercent * this.barPinPosition) / (widthTrack - barPin.offsetWidth - 2);
-
-    imgPreview.style.filter = `${arrEffects[effectIndex]}(${saturatePercent}${this.effectsUnit})`;
+(function () {
+  var uploadEffect = {
+    bar: document.querySelector('.img-upload__effect-level'),
+    barPin: document.querySelector('.upload-effect-level-pin'),
+    barFill: document.querySelector('.upload-effect-level-val'),
+    barTrack: document.querySelector('.img-upload__effect-level'),
   };
 
-  this.changeBarPinPosition = function (num) {
-    var widthTrack = overlayImg.querySelector('.img-upload__effect-level').offsetWidth - 28;
+  var uploadButtonStart = document.querySelector('.img-upload__start');
+  var uploadButtonCancel = document.querySelector('.img-upload__cancel');
+  var inputFile = document.querySelector('#upload-file');
 
-    var tmp = this.barPinPosition + num;
-    if ((tmp <= widthTrack) && (tmp >= 0)) {
-      this.barPinPosition = tmp;
-      this.barFillPosition += num;
-      console.log(`barPinPosition ${this.barPinPosition}`);
+  var uploadBlock = document.querySelector('.img-upload__overlay');
+  var effectList = document.querySelector('.effects__list');
+  var listEffectItem = document.querySelectorAll('.effects__item');
+
+  var imgPreview = document.querySelector('.img-upload__preview');
+  var barEffectLevel = document.querySelector('.img-upload__effect-level');
+
+  var listDataEffect = [];
+
+  //-------------------
+
+  var renderFilter = function (index, persent) {
+    var mathValue = function () {
+      return (window.utils.filterVariants.arrPercent[index]) - (persent * window.utils.filterVariants.arrPercent[index])
+    }
+
+    if (index === 0) {
+      imgPreview.style.filter = 'none';
+      return
+    }
+
+    imgPreview.style.filter = `${window.utils.filterVariants.arrEffects[index]}(${mathValue()}${window.utils.filterVariants.arrUnit[index]})`;
+  }
+
+  var doOverlayImgOpen = function () {
+    uploadBlock.classList.remove('hidden');
+
+    for (var i = 0; i < listEffectItem.length; i++) {
+      listDataEffect[i] = new window.BarSlider(uploadEffect, i, renderFilter);
+    }
+
+    var resetFilter = function (item) {
+      item.setParameters(); // поменять название
+    }
+
+    var lastIndexFilter = 0;
+    imgPreview.style.filter = 'none';
+    barEffectLevel.classList.add('hidden');
+
+    effectList.addEventListener('click', function (evt) {
+      var { target } = evt;
+      if (target.tagName === 'INPUT') {
+        var activInputValue = window.utils.filterVariants.arrTypes.indexOf(target.value)
+
+        if (activInputValue === 0) {
+          barEffectLevel.classList.add('hidden');
+        } else {
+          barEffectLevel.classList.remove('hidden');
+        }
+
+        listDataEffect[lastIndexFilter].active = false;
+        listDataEffect[activInputValue].active = true;
+        resetFilter(listDataEffect[activInputValue])
+
+        lastIndexFilter = activInputValue;
+      }
+    })
+  };
+
+  var doOverlayImgClose = function () {
+    uploadBlock.classList.add('hidden');
+    inputFile.value = '';
+
+    for (var i = 0; i < listEffectItem.length; i++) {
+      listDataEffect[i] = null;
     }
   };
 
-  this.changeBarFillPosition = function (num) {
-    this.barFillPosition += num;
-  };
-};
+  // временно открытие чтоб не нажимать
+  // doOverlayImgOpen();
+  var clickOutsideChecker;
 
-var changeEffectLevel = function (step = 0) {
-  imgPreview.style.filter = 'none';
-  var itemInstrument = document.querySelector('input[name="effect"]:checked');
-  var indexInput = (arrTypes.indexOf(itemInstrument.value));
+  // открытие если изменен файл
+  uploadButtonStart.addEventListener('change', () => {
+    doOverlayImgOpen();
+    clickOutsideChecker = false;
+  });
 
-  if (indexInput > 0) {
-    listDataEffect[indexInput].changeBarPinPosition(step);
-    listDataEffect[indexInput].changeEffectLevel(indexInput);
-  }
-};
+  // закрытие
+  uploadButtonCancel.addEventListener('click', () => {
+    doOverlayImgClose();
+    clickOutsideChecker = false;
+  });
 
-var doOverlayImgOpen = function () {
-  overlayImg.classList.remove('hidden');
+  // обработка клика вне окна и esc
 
-  for (var i = 0; i < listEffectItem.length; i++) {
-    listDataEffect[i] = new UploadEffectLevel(listEffectItem[i], i);
-
-    listEffectItem[i].addEventListener('click', () => {
-      changeEffectLevel();
-    });
-  }
-};
-
-barPin.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === LEFT_KEY) {
-    changeEffectLevel(STEP_LEFT);
+  var onOutsideOnLoadDown = function (evt) {
+    if (!evt.target.classList.contains('img-upload__overlay')) return;
+    clickOutsideChecker = true;
   }
 
-  if (evt.keyCode === RIGHT_KEY) {
-    changeEffectLevel(STEP_RIGHT);
+  var onOutsideOnLoadUp = function (evt) {
+    if (clickOutsideChecker && evt.target.classList.contains('img-upload__overlay')) {
+      doOverlayImgClose();
+    }
   }
-});
 
-var doOverlayImgClose = function () {
-  overlayImg.classList.add('hidden');
-  inputFile.value = '';
-
-  for (var i = 0; i < listEffectItem.length; i++) {
-    listDataEffect[i] = null;
+  var onOnLoadEscPress = function (evt) {
+    if (window.utils.isEscKeycode(evt)) {
+      doOverlayImgClose();
+    }
   }
-};
 
-// временно открытие чтоб не нажимать
-// doOverlayImgOpen();
+  uploadBlock.addEventListener('mousedown', onOutsideOnLoadDown)
+  uploadBlock.addEventListener('mouseup', onOutsideOnLoadUp)
 
-// открытие если изменен файл
-uploadButtonStart.addEventListener('change', () => {
-  doOverlayImgOpen();
-});
-
-// закрытие
-uploadButtonCancel.addEventListener('click', () => {
-  doOverlayImgClose();
-});
+  document.addEventListener('keydown', onOnLoadEscPress)
+}())

@@ -2,8 +2,10 @@
   var bigPictures = document.querySelector('.big-picture');
   var picturesTable = document.querySelector('.pictures');
   var pictureClose = document.querySelector('.big-picture__cancel');
+  var clickOutsideChecker;;
 
   var openBigPicture = function (evt) {
+    clickOutsideChecker = false;
     evt.stopPropagation();
     var { target } = evt;
 
@@ -12,15 +14,17 @@
       bigPictures.classList.remove('hidden');
       document.querySelector('.social__comment-count').classList.add('visually-hidden');
       document.querySelector('.social__comments-loader').classList.add('visually-hidden');
-      document.addEventListener('click', onOutsidePictureClick);
-      document.addEventListener('keydown', onPictureEscPress)
+      document.addEventListener('mousedown', onOutsideOnLoadDown);
+      document.addEventListener('mouseup', onOutsideOnLoadUp);
+      document.addEventListener('keydown', onPictureEscPress);
     }
   };
 
   var closeBigPicture = function () {
     bigPictures.classList.add('hidden');
     document.removeEventListener('keydown', onPictureEscPress);
-    document.removeEventListener('click', onOutsidePictureClick)
+    document.removeEventListener('mousedown', onOutsideOnLoadDown);
+    document.removeEventListener('mouseup', onOutsideOnLoadUp);
   };
 
   var onPictureEscPress = function (evt) {
@@ -29,10 +33,13 @@
     }
   }
 
-  var onOutsidePictureClick = function (evt) {
-    var { target } = evt;
+  var onOutsideOnLoadDown = function (evt) {
+    if (!evt.target.classList.contains('big-picture')) return;
+    clickOutsideChecker = true;
+  }
 
-    if (!target.closest('.big-picture__preview')) {
+  var onOutsideOnLoadUp = function (evt) {
+    if (clickOutsideChecker && evt.target.classList.contains('big-picture')) {
       closeBigPicture()
     }
   }

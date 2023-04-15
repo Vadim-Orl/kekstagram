@@ -190,8 +190,7 @@ main {
   display: grid;
   grid-gap: 10px;
 
-  -ms-grid-columns: (1fr)[7];
-      grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .picture {
@@ -367,6 +366,7 @@ main {
 }
 
 
+
 /* Окно для редактирования изображения
    ========================================================================== */
 
@@ -392,6 +392,7 @@ main {
   position: relative;
   margin-bottom: 30px;
 }
+
 
 
 /**
@@ -568,6 +569,7 @@ main {
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
+
 }
 
 .effect-level .noUi-target {
@@ -585,6 +587,8 @@ main {
 .effect-level__value {
   display: none;
 }
+
+
 
 
 /**
@@ -689,6 +693,7 @@ main {
 }
 
 
+
 /**
  * Блок добавления хэштегов и комментария к изображению
  */
@@ -714,6 +719,10 @@ main {
   color: #000000;
 
   border-radius: 5px;
+
+  &:focus {
+    outline-color: green;
+  }
 }
 
 .text__description {
@@ -1419,6 +1428,12 @@ main {
   background-color: red;
 }
 
+input[value="none"]:checked +
+  .effect-level__slider {
+    display: none;
+    border: 10px solid red;
+  }
+
 .visually-hidden {
   position: absolute;
 
@@ -1440,3 +1455,4 @@ main {
 .hidden {
   display: none;
 }
+
