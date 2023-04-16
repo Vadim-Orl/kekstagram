@@ -28,6 +28,6 @@ gulp-webp-html оборачивает img в использование либо
 gulp-webp-css тоже самое со стилями
 gulp-if использовать ли плагин
 gulp-sourcemap карты кода
-
-
+concurrently - запуск нескольких процессов
+json-server - сервер
 eslint eslint-config-airbnb eslint-config-prettier eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-prettier prettier

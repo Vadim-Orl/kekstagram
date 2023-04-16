@@ -6,10 +6,8 @@
   // рендер коментария
   var renderComment = function (bigPicture, index, bigPictureTemplate) {
     var pictureElement = bigPictureTemplate.cloneNode(true);
-
-    var randomAvatar = Math.floor(Math.random() * 6) + 1;
-    pictureElement.querySelector('.social__picture').src = `img/avatar-${randomAvatar}.svg`;
-    pictureElement.querySelector('.social__text').textContent = bigPicture.comments[index];
+    pictureElement.querySelector('.social__picture').src = bigPicture.comments[index].avatar;
+    pictureElement.querySelector('.social__text').textContent = bigPicture.comments[index].message;
 
     return pictureElement;
   };
@@ -39,7 +37,7 @@
       bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
       bigPictures.querySelector('.comments-count').textContent = itemPictures.comments.length;
       bigPictures.querySelector('.likes-count').textContent = itemPictures.likes;
-      bigPictures.querySelector('.social__caption').textContent = itemPictures.desckription;
+      bigPictures.querySelector('.social__caption').textContent = itemPictures.description;
       removeLastBigPictureComments();
       renderBigPictureComments(itemPictures);
     }
