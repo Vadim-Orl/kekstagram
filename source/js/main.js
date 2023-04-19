@@ -1,11 +1,13 @@
 (function () {
+  var ParentphotosBlocks = document.querySelector('.pictures');
+
+  var photosBlock = [];
+
   var onError = function (message) {
     console.error(message);
   }
 
   var onSuccess = function (data) {
-    console.log(data);
-
     var fragment = document.createDocumentFragment();
     var COUNT_PHOTOS = data.length;
 
@@ -17,22 +19,48 @@
     }
 
     var doNewPhotoList = function () {
-      var photosBlock = [];
-
       for (var i = 0; i < COUNT_PHOTOS; i++) {
         photosBlock[i] = new PhotoBlockInit(i);
       }
       return photosBlock;
     };
 
-    var listPicturesBlock = doNewPhotoList();
 
-    function initPhoto() {
+    // уже с данными из БД
+    var primarylistPicturesBlock = doNewPhotoList();
+    var clonePrimarylist = primarylistPicturesBlock.slice(0);
+
+    var discussedlistPicturesBlock = clonePrimarylist.sort(function (first, second) {
+      return second.comments.length - first.comments.length;
+    })
+
+    clonePrimarylist = primarylistPicturesBlock.slice(0);
+    var randomListPicturesBlock = clonePrimarylist.sort(() => Math.random() - 0.5);
+
+    var filtresListMap = {
+      'filter-default': primarylistPicturesBlock,
+      'filter-random': randomListPicturesBlock,
+      'filter-discussed': discussedlistPicturesBlock,
+    };
+
+
+    var clearPhoto = function () {
+      var listPhotosBlocks = ParentphotosBlocks.querySelectorAll('.picture');
+
+      listPhotosBlocks.forEach((element) => {
+        element.parentElement.removeChild(element)
+      });
+    }
+
+    function initPhoto(listPicturesBlock) {
+      clearPhoto();
+
       for (var i = 0; i < listPicturesBlock.length; i++) {
         fragment.appendChild(renderPictures(listPicturesBlock[i], i));
       }
 
-      document.querySelector('.pictures').appendChild(fragment);
+      ParentphotosBlocks.appendChild(fragment);
+      return listPicturesBlock;
     }
 
     var renderPictures = function (picture, index) {
@@ -46,8 +74,21 @@
       return pictureElement;
     };
 
-    initPhoto();
-    window.renderListPicturesBlock = listPicturesBlock;
+    var filterImgConteiner = document.querySelector('.img-filters__form');
+    var filterImgButtons = filterImgConteiner.querySelectorAll('.img-filters__button');
+
+    filterImgConteiner.addEventListener('click', function (evt) {
+      var { target } = evt;
+
+      filterImgButtons.forEach((element) => {
+        element.classList.remove('img-filters__button--active')
+      });
+      target.classList.add('img-filters__button--active')
+
+      window.renderListPicturesBlock = initPhoto((filtresListMap[target.id]));
+    });
+
+    window.renderListPicturesBlock = initPhoto(filtresListMap['filter-default']);
   };
 
   var URL = 'http://localhost:3001/server';
