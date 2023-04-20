@@ -25,11 +25,10 @@
       return photosBlock;
     };
 
-
     // уже с данными из БД
     var primarylistPicturesBlock = doNewPhotoList();
     var clonePrimarylist = primarylistPicturesBlock.slice(0);
-
+    console.log(primarylistPicturesBlock);
     var discussedlistPicturesBlock = clonePrimarylist.sort(function (first, second) {
       return second.comments.length - first.comments.length;
     })
@@ -42,7 +41,6 @@
       'filter-random': randomListPicturesBlock,
       'filter-discussed': discussedlistPicturesBlock,
     };
-
 
     var clearPhoto = function () {
       var listPhotosBlocks = ParentphotosBlocks.querySelectorAll('.picture');

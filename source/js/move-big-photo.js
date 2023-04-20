@@ -2,7 +2,7 @@
   var bigPictures = document.querySelector('.big-picture');
   var picturesTable = document.querySelector('.pictures');
   var pictureClose = document.querySelector('.big-picture__cancel');
-  var clickOutsideChecker;;
+  var clickOutsideChecker;
 
   var openBigPicture = function (evt) {
     clickOutsideChecker = false;
@@ -12,8 +12,6 @@
     if (target.closest('.picture')) {
       window.newBigPicture(window.renderListPicturesBlock[target.closest('.picture').name]);
       bigPictures.classList.remove('hidden');
-      document.querySelector('.social__comment-count').classList.add('visually-hidden');
-      document.querySelector('.social__comments-loader').classList.add('visually-hidden');
       document.addEventListener('mousedown', onOutsideOnLoadDown);
       document.addEventListener('mouseup', onOutsideOnLoadUp);
       document.addEventListener('keydown', onPictureEscPress);
