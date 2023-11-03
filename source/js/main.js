@@ -3,10 +3,8 @@
 
   var photosBlock = [];
 
-
-
   var onSuccess = function (dataBd) {
-    const data = window.dataTest;
+    const data = dataBd;
     var fragment = document.createDocumentFragment();
     var COUNT_PHOTOS = data.length;
 
