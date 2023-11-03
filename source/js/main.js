@@ -8,6 +8,7 @@
   }
 
   var onSuccess = function (data) {
+    // data=window.dateTest;
     var fragment = document.createDocumentFragment();
     var COUNT_PHOTOS = data.length;
 

@@ -29,7 +29,7 @@
     var fragment = document.createDocumentFragment();
     var maxCountComment = 5;
     var countCommentIsFive = Math.ceil((bigPicture.comments.length / maxCountComment));
-    console.log("countCommentIsFive - " + countCommentIsFive)
+    console.log('countCommentIsFive - ' + countCommentIsFive)
     var startCountCommentsIsFive = 1;
     var i = 0;
 

@@ -4,7 +4,7 @@
   var LEFT_KEYCODE = 37;
   var RIGHT_KEYCODE = 39;
 
-  window.utils = {
+utils = {
     isEscKeycode(evt) {
       return evt.keyCode === ESC_KEYCODE;
     },

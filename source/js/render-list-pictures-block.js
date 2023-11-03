@@ -43,7 +43,7 @@
 
   function initPhoto() {
     for (var i = 0; i < listPicturesBlock.length; i++) {
-      fragment.appendChild(renderPictures(listPicturesBlock[i], i));
+      fragment.appendChild( (listPicturesBlock[i], i));
     }
 
     document.querySelector('.pictures').appendChild(fragment);

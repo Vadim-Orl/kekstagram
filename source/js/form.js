@@ -18,8 +18,6 @@
 
     if (arrHastags.length > MAX_HASHTAG_AMOUNT) {
       hashtagsInput.setCustomValidity(`Хэш-тегов не должно быть больше чем ${MAX_HASHTAG_AMOUNT}`);
-    } else {
-      hashtagsInput.setCustomValidity('');
     }
 
     arrHastags.forEach((hashtag) => {
@@ -38,8 +36,6 @@
         )
       } else if (arrHastags.length !== uniqueHashTagArray.size) {
         hashtagsInput.setCustomValidity('Хэш-теги не должны повторяться');
-      } else {
-        hashtagsInput.setCustomValidity('');
       }
     });
 
