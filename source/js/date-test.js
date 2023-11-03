@@ -1,5 +1,5 @@
 (function () {
-  window.dateTest = {
+  window.dataTest = {
     MAX_RANDOM_COMMENTS: 4,
     MAX_RANDOM_LICKES: 255,
     MIN_RANDOM_LICKES: 15,

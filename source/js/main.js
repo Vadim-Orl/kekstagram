@@ -3,12 +3,10 @@
 
   var photosBlock = [];
 
-  var onError = function (message) {
-    console.error(message);
-  }
 
-  var onSuccess = function (data) {
-    // data=window.dateTest;
+
+  var onSuccess = function (dataBd) {
+    const data = window.dataTest;
     var fragment = document.createDocumentFragment();
     var COUNT_PHOTOS = data.length;
 
@@ -89,6 +87,11 @@
 
     window.renderListPicturesBlock = initPhoto(filtresListMap['filter-default']);
   };
+
+  var onError = function (message) {
+    console.error(message);
+    onSuccess(window.dataTest);
+  }
 
   var URL = 'http://localhost:3001/server';
 
