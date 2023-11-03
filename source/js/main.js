@@ -91,7 +91,7 @@
     onSuccess(window.dataTest);
   }
 
-  var URL = 'http://localhost:3001/server';
+  var URL = 'https://vadim-orl.github.io/kekstagram/source/server/db.json';
 
   window.load(URL, onSuccess, onError);
 }());
