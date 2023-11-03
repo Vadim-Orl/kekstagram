@@ -3,27 +3,27 @@
 
   var PhotoBlockInit = function (index) {
     this.url = `photos/${index + 1}.jpg`;
-    this.likes = Math.floor(Math.random() * window.dateTest.MAX_RANDOM_LICKES) + window.dateTest.MIN_RANDOM_LICKES;
+    this.likes = Math.floor(Math.random() * window.dataTest.MAX_RANDOM_LICKES) + window.dataTest.MIN_RANDOM_LICKES;
     this.comments = randomComments();
-    this.desckription = window.dateTest.DESCKRIPTION[Math.floor(Math.random() * window.dateTest.DESCKRIPTION.length)];
+    this.desckription = window.dataTest.DESCKRIPTION[Math.floor(Math.random() * window.dataTest.DESCKRIPTION.length)];
 
     function randomComments() {
       var comment = [];
-      var commentsAmount = Math.floor(Math.random() * window.dateTest.MAX_RANDOM_COMMENTS) + 1;
+      var commentsAmount = Math.floor(Math.random() * window.dataTest.MAX_RANDOM_COMMENTS) + 1;
 
       for (var i = 0; i < commentsAmount; i++) {
         var tmp = examinationRandomComment(comment);
-        comment[i] = window.dateTest.COMMENTS[tmp];
+        comment[i] = window.dataTest.COMMENTS[tmp];
       }
       return comment;
     }
 
     function examinationRandomComment(comment) {
-      var commentRandom = Math.floor(Math.random() * window.dateTest.COMMENTS.length);
+      var commentRandom = Math.floor(Math.random() * window.dataTest.COMMENTS.length);
 
       for (var i = 0; i <= comment.length; i++) {
-        while (comment.includes(window.dateTest.COMMENTS[commentRandom])) {
-          commentRandom = Math.floor(Math.random() * window.dateTest.COMMENTS.length);
+        while (comment.includes(window.dataTest.COMMENTS[commentRandom])) {
+          commentRandom = Math.floor(Math.random() * window.dataTest.COMMENTS.length);
         }
       }
       return commentRandom;
@@ -33,7 +33,7 @@
   var doNewPhotoList = function () {
     var photosBlock = [];
 
-    for (var i = 0; i < window.dateTest.COUNT_PHOTOS; i++) {
+    for (var i = 0; i < window.dataTest.COUNT_PHOTOS; i++) {
       photosBlock[i] = new PhotoBlockInit(i);
     }
     return photosBlock;
@@ -43,7 +43,7 @@
 
   function initPhoto() {
     for (var i = 0; i < listPicturesBlock.length; i++) {
-      fragment.appendChild(renderPictures(listPicturesBlock[i], i));
+      fragment.appendChild((listPicturesBlock[i], i));
     }
 
     document.querySelector('.pictures').appendChild(fragment);

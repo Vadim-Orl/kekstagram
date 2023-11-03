@@ -3,11 +3,8 @@
 
   var photosBlock = [];
 
-  var onError = function (message) {
-    console.error(message);
-  }
-
-  var onSuccess = function (data) {
+  var onSuccess = function (dataBd) {
+    const data = dataBd;
     var fragment = document.createDocumentFragment();
     var COUNT_PHOTOS = data.length;
 
@@ -25,11 +22,10 @@
       return photosBlock;
     };
 
-
     // уже с данными из БД
     var primarylistPicturesBlock = doNewPhotoList();
     var clonePrimarylist = primarylistPicturesBlock.slice(0);
-
+    console.log(primarylistPicturesBlock);
     var discussedlistPicturesBlock = clonePrimarylist.sort(function (first, second) {
       return second.comments.length - first.comments.length;
     })
@@ -42,7 +38,6 @@
       'filter-random': randomListPicturesBlock,
       'filter-discussed': discussedlistPicturesBlock,
     };
-
 
     var clearPhoto = function () {
       var listPhotosBlocks = ParentphotosBlocks.querySelectorAll('.picture');
@@ -90,6 +85,11 @@
 
     window.renderListPicturesBlock = initPhoto(filtresListMap['filter-default']);
   };
+
+  var onError = function (message) {
+    console.error(message);
+    onSuccess(window.dataTest);
+  }
 
   var URL = 'http://localhost:3001/server';
 
