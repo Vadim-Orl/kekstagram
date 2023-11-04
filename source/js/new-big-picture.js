@@ -29,7 +29,6 @@
     var fragment = document.createDocumentFragment();
     var maxCountComment = 5;
     var countCommentIsFive = Math.ceil((bigPicture.comments.length / maxCountComment));
-    console.log('countCommentIsFive - ' + countCommentIsFive)
     var startCountCommentsIsFive = 1;
     var i = 0;
 
@@ -55,9 +54,6 @@
       }
       startCountCommentsIsFive++;
       bigPictures.querySelector('.comments-count--shown').textContent = `${nextCommentIsFive * maxCountComment}`;
-
-      // console.log(`${startCountCommentsIsFive * maxCountComment}`)
-      // console.log(`${countCommentIsFive * maxCountComment}`)
 
       if ((startCountCommentsIsFive * maxCountComment) === (countCommentIsFive * maxCountComment)) doCommentLoaderHide(true)
     });

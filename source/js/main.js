@@ -25,7 +25,6 @@
     // уже с данными из БД
     var primarylistPicturesBlock = doNewPhotoList();
     var clonePrimarylist = primarylistPicturesBlock.slice(0);
-    console.log(primarylistPicturesBlock);
     var discussedlistPicturesBlock = clonePrimarylist.sort(function (first, second) {
       return second.comments.length - first.comments.length;
     })
@@ -93,5 +92,6 @@
 
   var URL = 'https://vadim-orl.github.io/kekstagram/source/server/db.json';
 
-  window.load(URL, onSuccess, onError);
+  // window.load(URL, onSuccess, onError);
+  onSuccess(window.dataTest);
 }());
